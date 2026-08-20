@@ -14,7 +14,8 @@
    los valores de las posiciones pares del vector
    en el mismo orden que están almacenados. ✅️
    ¿Qué cambiaría para imprimir en orden inverso?
-
+  c) Escriba el cuerpo principal que invoque a los módulos ya 
+   implementados.
 
 }
 
@@ -23,10 +24,10 @@ uses crt;
 const dimF = 20; // deberia ser 50
 // tipos.
 type
- enteros = array[1..dimF] of Integer ;
+ enteros = array[1..dimF] of Integer;
  
 // módulos.
-function generarRandm(A,B:Integer):Integer ;
+function generarRandm(A,B:Integer):Integer;
  var res, num: Integer;
  begin
   res := -1;
@@ -87,6 +88,22 @@ procedure imprimirVector(v:enteros;dimL:Integer);
     i:=i+2;
    end;
  end;
+procedure imprimirVectorInverso(v:enteros;dimL:Integer);
+ var
+  i: Integer;
+ begin
+  i:=dimL
+  if(i MOD 2) writeln(i, ' es par');
+  else writeln(i, ' es impar');
+  //i:=2;
+  
+  {while(i < dimL) do
+   begin 
+    writeln(i,': ',v[i]);
+    i:=i+2;
+   end;}
+ end;
+
 
 var
  v: enteros;

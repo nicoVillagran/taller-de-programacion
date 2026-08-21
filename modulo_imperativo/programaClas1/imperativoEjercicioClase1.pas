@@ -9,12 +9,13 @@
   b. Un módulo que muestre el contenido del vector resultante del punto a). ✅
   c. Un módulo que ordene el vector de ventas por código. ✅
   d. Un módulo que muestre el contenido del vector resultante del punto c).✅
-  
   e. Un módulo que elimine, del vector ordenado, las ventas con código de producto entre dos valores que se ingresan como parámetros.
-  
   f. Un módulo que muestre el contenido del vector resultante del punto e).
+  * 
+  * 
   g. Un módulo que retorne la información (ordenada por código de producto de menor a mayor) de cada código par de producto junto a la cantidad total
 	 de productos vendidos.
+	 * 
   h. Un módulo que muestre la información obtenida en el punto g).
 }
 
@@ -36,14 +37,14 @@ end;
 vector = array [1..dimF] of venta; { estructura principal para guardar la informacion }
 
 elemento = record
-				codigoP: rango1;
-				cantTotal: integer;
+	codigoP: rango1;
+	cantTotal: integer;
 end;
 
 lista = ^nodo;
 nodo = record
-				dato: elemento;
-				sig: lista;
+	dato: elemento;
+	sig: lista;
 end;
 
 // Modulos
@@ -161,48 +162,80 @@ procedure Eliminar (var v: vector; var dimL: rango3; valorInferior, valorSuperio
    begin
     posSuperior:= BuscarPosicionDesde (v, dimL, posInferior, valorSuperior); //
     //Escribir el código correspondiente para hacer el corrimiento y disminuir la dimensión lógica.
+    for i:=posInferior to posSuperior do
+     begin
+      v[i]:=v[i+1];
+      dimL:=dimL-1;
+     end;
    end;
  end;
 
+
+{------------------- módulo "" ---------------------------------}
 procedure GenerarLista (v: vector; dimL: rango3; var L: lista);
 
-procedure AgregarAtras (var L, ult: lista; elem: elemento);
-begin
-				{ Completar }
-end;
+ procedure AgregarAtras (var L{pri}, ult{ultimo nodo}: lista; elem {total ventas}}: elemento);
+ var nuevo: lista;
+ begin
+  //Completar
+  
+  // creamos un nuevo nodo.
+  new(nuevo);
+  nuevo^.dato := elem;
+  nuevo^.sig := nil
+  
+  // buscamos donde ponerlo 
+  if (L^.sig = nil) then
+   begin
+    L := nuevo;
+    ult := nuevo;
+   end;
+  else 
+   ult^.sig := nuevo;
+ end;
 
 
 var i: rango3; ult: lista; e: elemento;
 begin
-				L:= nil; ult:= nil; i:= 1;
-				while (i<= dimL) do
-				begin
-								e.codigoP:=  v[i].codigoP;
-								e.cantTotal:= 0;
-								while ((i<= dimL) and (e.codigoP =  v[i].codigoP)) do
-								begin
-												e.cantTotal:= e.cantTotal + v[i].cantidad;
-												i:= i + 1;
-								end;
-								AgregarAtras (L, ult, e);
-				end;
-end;
+ L:= nil;
+ ult:= nil;
+ i:= 1;
+ while (i<= dimL) do
+  begin
+   e.codigoP:=  v[i].codigoP;
+   e.cantTotal:= 0;
+	while ((i<= dimL) and (e.codigoP =  v[i].codigoP)) do
+		begin
+			e.cantTotal:= e.cantTotal + v[i].cantidad;
+			i:= i + 1;
+		end;
+	AgregarAtras (L, ult, e);
+  end;
+ end;
 
 procedure ImprimirLista (L: lista);
-begin
-				{ Completar }
-end;
+ begin
+  //Completar
+  while (L <> nil) do
+   begin
+    writeln(L^.dato.codigoP);
+    writeln(L^.dato.cantTotal);
+    
+    // avanzar
+    L := L^.sig;
+   end;
+ end;
 
-var v: vector;
-dimL: rango3;
-valorInferior, valorSuperior: rango1;
-L: lista;
-
+var 
+ v: vector;
+ dimL: rango3;
+ valorInferior, valorSuperior: rango1;
+ L: lista;
 Begin
-AlmacenarInformacion (v, dimL);
-writeln;
-if (dimL = 0) then writeln ('--- Vector sin elementos ---')
-								else begin
+ AlmacenarInformacion (v, dimL);
+ writeln;
+ if (dimL = 0) then writeln ('--- Vector sin elementos ---')
+ else begin
 												writeln ('--- Vector ingresado --->');
 												writeln;
 												ImprimirVector (v, dimL);

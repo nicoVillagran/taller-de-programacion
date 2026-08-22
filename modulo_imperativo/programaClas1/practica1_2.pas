@@ -1,21 +1,21 @@
 {
  El administrador de un edificio de oficinas cuenta, en papel, con la información del pago de las expensas de dichas oficinas.
  * Implementar un programa que invoque a módulos para cada uno de los siguientes puntos:
- * 
- a. Genere un vector, sin orden, con a lo sumo las 300 oficinas que administra. 
+ *
+ a. Genere un vector, sin orden, con a lo sumo las 300 oficinas que administra.
  * De cada oficina se ingresa:
  * 	 el código de identificación,
- *  DNI del propietario 
- * y valor de la expensa. 
-    
+ *  DNI del propietario
+ * y valor de la expensa.
+
    La lectura finaliza cuando se ingresa el código de identificación -1, el cual no se procesa.
- 
+
  b. Ordene el vector aplicando el método de selección, por "código de identificación" de la oficina.
 }
 
 program practica1_2;
 const dimF = 300;
-// tipos
+{ tipos }
 Type
  oficina = record
   ID: integer;
@@ -23,14 +23,14 @@ Type
   expensa: real;
  end;
  vector = array[1..dimF] of oficina;
- 
-//módulos
+
+{ módulos }
 procedure generarVector (var v: vector; var dimL:integer);
  procedure LeerOficina (var ofi: oficina);
-  begin   
+  begin
    readln(ofi.ID);
-   if (ofi.ID <> -1)then  // Solo si el dia random generado NO es cero, seguimos con los demas datos.
-	begin 
+   if (ofi.ID <> -1)then {Solo si el dia random generado NO es cero, seguimos con los demas datos.}
+	begin
 	 writeln('DNI del propietario:');
 	 readln(ofi.dniPropietario);
 	 writeln('valor expensa: ');
@@ -38,6 +38,21 @@ procedure generarVector (var v: vector; var dimL:integer);
 	end;
   end;
 
+ procedure initVector (var v:vector);
+  var i: integer;
+	begin
+	 for i:=1 to dimF do
+		v[i]:=0;
+	end;
+
+ procedure agregarVector(var v:vector; var dimL:integer;elem:oficina;var ok:boolean);
+ begin
+	if (dimL+1 <= dimF) then
+	 begin
+	  dimL := dimL+1;
+		v[dimL] := oficina;
+	 end;
+ end;
 begin
 
 end;

@@ -11,11 +11,8 @@
   d. Un módulo que muestre el contenido del vector resultante del punto c).✅
   e. Un módulo que elimine, del vector ordenado, las ventas con código de producto entre dos valores que se ingresan como parámetros.
   f. Un módulo que muestre el contenido del vector resultante del punto e).
-  * 
-  * 
   g. Un módulo que retorne la información (ordenada por código de producto de menor a mayor) de cada código par de producto junto a la cantidad total
 	 de productos vendidos.
-	 * 
   h. Un módulo que muestre la información obtenida en el punto g).
 }
 

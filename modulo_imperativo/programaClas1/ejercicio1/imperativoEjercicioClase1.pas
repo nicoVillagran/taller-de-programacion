@@ -20,33 +20,28 @@ program Clase1MI;
 const dimF = 50;
 // Tipos
 type
-dias = 0..31;
-rango1 = 0..15;
-rango2 = 1..99;
-rango3 = 0..dimF;
-
-venta = record
-				dia: dias;
-				codigoP: rango1;
-				cantidad: rango2;
-end;
-
-vector = array [1..dimF] of venta; { estructura principal para guardar la informacion }
-
-elemento = record
-	codigoP: rango1;
-	cantTotal: integer;
-end;
-
-lista = ^nodo;
-nodo = record
-	dato: elemento;
-	sig: lista;
-end;
+  dias = 0..31;
+  rango1 = 0..15;
+  rango2 = 1..99;
+  rango3 = 0..dimF;
+  venta = record
+    dia: dias;
+    codigoP: rango1;
+    cantidad: rango2;
+  end;
+  vector = array [1..dimF] of venta; { estructura principal para guardar la informacion }
+  elemento = record
+    codigoP: rango1;
+    cantTotal: integer;
+  end;
+  lista = ^nodo;
+  nodo = record
+    dato: elemento;
+    sig: lista;
+  end;
 
 // Modulos
 {------------------- módulo "a" ---------------------------------}
-
 procedure AlmacenarInformacion (var v: vector; var dimL: rango3); // recibe: un vector y un dimL con un rango determinado porque este módulo va a crear un vector.
  procedure LeerVenta (var v: venta); // sub-módulo: recibe un registro "venta".
   begin
@@ -77,7 +72,6 @@ procedure AlmacenarInformacion (var v: vector; var dimL: rango3); // recibe: un 
    end;
  // Nota módulo: creamos un registro, lo llenamos y lo agregamos al vector.
  end;
-}
 
 
 {------------------- módulo "B" ---------------------------------}
@@ -114,23 +108,23 @@ procedure ImprimirVector (v: vector; dimL: rango3); // Solo lectura. Vector y Ta
 
 {------------------- módulo "C" ---------------------------------}
 procedure Ordenar (var v: vector; dimL: rango3); // solo modificamos el vector, leemos la dimL.
- var
-  i, j, pos: rango3;
-  item: venta;
- begin
-  for i:= 1 to dimL - 1 do
-   begin //busca el mínimo y guarda su posición en "pos".
-	pos := i;
-	
-	for j := i+1 to dimL do if (v[j].codigoP < v[pos].codigoP) then pos:=j;
-    
-    //intercambia v[i] y v[pos].
-	item := v[pos]; // guardamos un valor a borrar.
-	v[pos] := v[i];
-	v[i] := item;
-	// fin de intercambio.
-   end;
- end;
+  var
+    i, j, pos: rango3;
+    item: venta;
+  begin
+    for i:= 1 to dimL - 1 do
+      begin
+        pos := i; //en "pos" guardamos el minimo cuando lo encontremos.
+      
+        for j:=i+1 to dimL do
+          if (v[j].codigoP < v[pos].codigoP) then pos:=j; // buscamos el minimo en el resto del vector.
+        
+        //intercambia v[i] y v[pos].
+        item := v[pos]; // guardamos el valor minimo encontrado.
+        v[pos] := v[i]; // liberamos la posicion "i".
+        v[i] := item; // ubicamos el minimos en "i".
+      end;
+  end;
 
 procedure Eliminar (var v: vector; var dimL: rango3; valorInferior, valorSuperior: rango1);
  // sub-módulos.
@@ -159,11 +153,11 @@ procedure Eliminar (var v: vector; var dimL: rango3; valorInferior, valorSuperio
    begin
     posSuperior:= BuscarPosicionDesde (v, dimL, posInferior, valorSuperior); //
     //Escribir el código correspondiente para hacer el corrimiento y disminuir la dimensión lógica.
-    for i:=posInferior to posSuperior do
-     begin
-      v[i]:=v[i+1];
-      dimL:=dimL-1;
-     end;
+    // corrimiento
+    salto:= (posSuperior - posInferior) + 1; // cantidad de elementos a eliminar
+    for i:= posSuperior + 1 to dimL do
+     v[i - salto]:= v[i]; // corrimiento a la izquierda.
+    dimL:= dimL - salto; // disminuimos la dimension logica.
    end;
  end;
 
@@ -171,44 +165,48 @@ procedure Eliminar (var v: vector; var dimL: rango3; valorInferior, valorSuperio
 {------------------- módulo "" ---------------------------------}
 procedure GenerarLista (v: vector; dimL: rango3; var L: lista);
 
- procedure AgregarAtras (var L{pri}, ult{ultimo nodo}: lista; elem {total ventas}}: elemento);
- var nuevo: lista;
- begin
-  //Completar
-  
-  // creamos un nuevo nodo.
-  new(nuevo);
-  nuevo^.dato := elem;
-  nuevo^.sig := nil
-  
-  // buscamos donde ponerlo 
-  if (L^.sig = nil) then
-   begin
-    L := nuevo;
-    ult := nuevo;
-   end;
-  else 
-   ult^.sig := nuevo;
- end;
+  procedure AgregarAtras (var L{pri}, ult{ultimo nodo}: lista; elem {total ventas}: elemento);
+    var nuevo: lista;
+    begin
+      //Completar...
+      // creamos un nuevo nodo.
+      new(nuevo);
+      nuevo^.dato := elem;
+      nuevo^.sig := nil;
+      
+      // buscamos donde ponerlo 
+      if (L = nil) then
+      begin
+        L := nuevo;
+        ult := nuevo;
+      end
+      else begin
+      ult^.sig := nuevo;
+        ult := nuevo;
+      end;
+    end;
 
 
-var i: rango3; ult: lista; e: elemento;
-begin
- L:= nil;
- ult:= nil;
- i:= 1;
- while (i<= dimL) do
+  var
+    i: rango3;
+    ult: lista;
+    e: elemento;
   begin
-   e.codigoP:=  v[i].codigoP;
-   e.cantTotal:= 0;
-	while ((i<= dimL) and (e.codigoP =  v[i].codigoP)) do
-		begin
-			e.cantTotal:= e.cantTotal + v[i].cantidad;
-			i:= i + 1;
-		end;
-	AgregarAtras (L, ult, e);
+  L:= nil;
+  ult:= nil;
+  i:= 1;
+  while (i<= dimL) do
+    begin
+    e.codigoP:=  v[i].codigoP;
+    e.cantTotal:= 0;
+      while ((i<= dimL) and (e.codigoP =  v[i].codigoP)) do
+        begin
+          e.cantTotal:= e.cantTotal + v[i].cantidad;
+          i:= i + 1;
+        end;
+    AgregarAtras (L, ult, e);
+    end;
   end;
- end;
 
 procedure ImprimirLista (L: lista);
  begin
@@ -232,35 +230,38 @@ Begin
  AlmacenarInformacion (v, dimL);
  writeln;
  if (dimL = 0) then writeln ('--- Vector sin elementos ---')
- else begin
-												writeln ('--- Vector ingresado --->');
-												writeln;
-												ImprimirVector (v, dimL);
-												writeln;
-												writeln ('--- Vector ordenado --->');
-												writeln;
-												Ordenar (v, dimL);
-												ImprimirVector (v, dimL);
-												{write ('Ingrese valor inferior: ');
-												readln (valorInferior);
-												write ('Ingrese valor superior: ');
-												readln (valorSuperior);
-												Eliminar (v, dimL, valorInferior, valorSuperior);
-												if (dimL = 0) then writeln ('--- Vector sin elementos, luego de la eliminacion ---')
-								else begin
-												writeln;
-												writeln ('--- Vector luego de la eliminacion --->');
-												writeln;
-												ImprimirVector (v, dimL);
-												GenerarLista (v, dimL, L);
-												if (L = nil) then writeln ('--- Lista sin elementos ---')
-								else begin
-												writeln;
-												writeln ('--- Lista obtenida --->');
-												writeln;
-												ImprimirLista (L);
-								end;
-				end;}
-end;
-
+ else
+  begin
+		writeln ('--- Vector ingresado --->');
+		writeln;
+		ImprimirVector (v, dimL);
+		writeln;
+		writeln ('--- Vector ordenado --->');
+		writeln;
+		Ordenar (v, dimL);
+		ImprimirVector (v, dimL);
+		
+		writeln ('--- Modifiquemos el vector --->');
+    write ('Ingrese valor inferior (1..', dimL, '): ');
+		readln (valorInferior);
+		write ('Ingrese valor superior (', valorInferior, '..', dimL, '): ');
+		readln (valorSuperior);
+		Eliminar (v, dimL, valorInferior, valorSuperior);
+		
+    if (dimL = 0) then writeln ('--- Vector sin elementos, luego de la eliminacion ---')
+    else begin
+      writeln;
+      writeln ('--- Vector luego de la eliminacion --->');
+      writeln;
+      ImprimirVector (v, dimL);
+      GenerarLista (v, dimL, L);
+      if (L = nil) then writeln ('--- Lista sin elementos ---')
+      else begin
+        writeln;
+        writeln ('--- Lista obtenida --->');
+        writeln;
+        ImprimirLista (L);
+      end;
+    end;
+  end;
 end.

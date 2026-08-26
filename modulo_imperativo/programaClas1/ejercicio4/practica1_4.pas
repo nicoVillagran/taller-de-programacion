@@ -58,11 +58,15 @@ procedure almacenarProductos(var v: vectorListas; var dimL: integer);
         end;
       
       if act = ant then
-        nue^.sig := l
-        l := nue
-      else
-        ant^.sig := nue;
-      nue^.sig := act;
+        begin  
+          nue^.sig := l;
+          l := nue;
+        end
+      else 
+        begin
+          ant^.sig := nue;
+          nue^.sig := act;
+        end;
     end;
   procedure initVectorListas(var v: vectorListas);
     var i: integer;
@@ -146,8 +150,9 @@ procedure mostrarVector(v: vRubro3; dimL: integer);
 function calcularPromedio (v: vRubro3; dimL: integer) : real;
   var
     i: integer;
-    sumaTotal, res: real;
+    sumaTotal: real;
   begin
+    sumaTotal:=0;
     for i:=1 to dimL do sumaTotal := sumaTotal + v[i].precio;
 
     calcularPromedio := sumaTotal / dimL;
@@ -156,7 +161,6 @@ function calcularPromedio (v: vRubro3; dimL: integer) : real;
 var
   vListas: vectorListas;
   vectorRubro3: vRubro3;
-  lRubro3: lista;
   dimLProductos, dimLRubro3: integer;
   promedPrecios: real;
 begin
@@ -172,4 +176,4 @@ begin
   promedPrecios := calcularPromedio(vectorRubro3, dimLRubro3);
 
   writeln('el promedio de precios: ', promedPrecios:2:0);
-end;
+end.

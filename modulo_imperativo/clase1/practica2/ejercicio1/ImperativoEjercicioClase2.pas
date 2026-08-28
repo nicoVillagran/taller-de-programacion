@@ -2,7 +2,7 @@
   1.- Implementar un programa que invoque a los siguientes módulos.
     a. Un módulo recursivo que retorne un vector de a lo sumo 15 números enteros "random" mayores a 130 y menores a 145 (incluidos ambos).
     La carga finaliza con 
-    el valor 130.
+    el valor 130. 
     b. Un módulo no recursivo que reciba el vector generado en a) e imprima el contenido del vector.
     c. Un módulo recursivo que reciba el vector generado en a) e imprima el contenido del vector.
     d. Un módulo recursivo que reciba el vector generado en a) y devuelva la suma de los valores contenidos en el vector.
@@ -13,107 +13,107 @@
 }
 
 Program Clase2MI;
-const dimF = 15;
-      min = 130;
-      max = 145;
-type vector = array [1..dimF] of integer;
-     
+const
+  dimF = 15;
+  min = 130;
+  max = 145;
+type
+  vector = array [1..dimF] of integer;  
 
 procedure CargarVector (var v: vector; var dimL: integer);
 
   procedure CargarVectorRecursivo (var v: vector; var dimL: integer);
   var valor: integer;
   begin
-    valor:= min + random (max - min + 1);
+    valor := min + random (max - min + 1);
     if ((valor <> 130 ) and (dimL < dimF)) 
     then begin
-          dimL:= dimL + 1;
-          v[dimL]:= valor;
-          CargarVectorRecursivo (v, dimL);
-         end;
+      dimL := dimL + 1;
+      v[dimL] := valor;
+      CargarVectorRecursivo (v, dimL);
+    end;
   end;
   
 begin
-  dimL:= 0;
+  dimL := 0;
   CargarVectorRecursivo (v, dimL);
 end;
  
 procedure ImprimirVector (v: vector; dimL: integer);
 var
-   i: integer;
+  i: integer;
 begin
-     for i:= 1 to dimL do
-         write ('------');
-     writeln;
-     write (' ');
-     for i:= 1 to dimL do begin
-        write(v[i], ' | ');
-     end;
-     writeln;
-     for i:= 1 to dimL do
-         write ('------');
-     writeln;
-     writeln;
-End;     
+  for i := 1 to dimL do
+    write ('------');
+  writeln;
+  write (' ');
+  for i := 1 to dimL do begin
+    write(v[i], ' | ');
+  end;
+  writeln;
+  for i := 1 to dimL do
+    write ('------');
+  writeln;
+  writeln;
+end;
 
 procedure ImprimirVectorRecursivo (v: vector; dimL: integer);
 begin    
-     {-- Completar --}     
+  {-- Completar --}     
 end; 
     
 function Sumar (v: vector; dimL: integer): integer; 
 
   function SumarRecursivo (v: vector; pos, dimL: integer): integer;
-
-  Begin
+  begin
     if (pos <= dimL)  
-    then SumarRecursivo:= SumarRecursivo (v, pos + 1, dimL) + v[pos]  
-    else SumarRecursivo:=0  
-  End;
+    then SumarRecursivo := SumarRecursivo (v, pos + 1, dimL) + v[pos]  
+    else SumarRecursivo := 0  
+  end;
  
 var pos: integer; 
 begin
- pos:= 1;
- Sumar:= SumarRecursivo (v, pos, dimL);
+  pos := 1;
+  Sumar := SumarRecursivo (v, pos, dimL);
 end;
 
-function  ObtenerMaximo (v: vector; dimL: integer): integer;
+function ObtenerMaximo (v: vector; dimL: integer): integer;
 begin
   {-- Completar --} 
 end;     
      
-function  BuscarValor (v: vector; dimL, valor: integer): boolean;
+function BuscarValor (v: vector; dimL, valor: integer): boolean;
 begin
   {-- Completar --} 
 end; 
 
 procedure ImprimirDigitos (v: vector; dimL: integer);
 begin    
-     {-- Completar --}     
+  {-- Completar --}     
 end; 
 
 var dimL, suma, maximo, valor: integer; 
-    v: vector;
-    encontre: boolean;
+  v: vector;
+  encontre: boolean;
 
-Begin 
+begin 
   randomize;
   CargarVector (v, dimL);
   writeln;
   if (dimL = 0) then writeln ('--- Vector sin elementos ---')
-                else begin
-                       ImprimirVector (v, dimL);
-                     {  ImprimirVectorRecursivo (v, dimL);}
-                     end;
+    else begin
+      ImprimirVector (v, dimL);
+      {  ImprimirVectorRecursivo (v, dimL);}
+    end;
   writeln;
   writeln;                   
-  suma:= Sumar(v, dimL);
+  suma := Sumar(v, dimL);
   writeln;
   writeln;
   writeln('La suma de los valores del vector es ', suma); 
   writeln;
   writeln;
- { maximo:= ObtenerMaximo(v, dimL);
+  { maximo := ObtenerMaximo(v, dimL);
   writeln;
   writeln;
   writeln('El maximo del vector es ', maximo); 
@@ -121,11 +121,11 @@ Begin
   writeln;
   write ('Ingrese un valor a buscar: ');
   read (valor);
-  encontre:= BuscarValor(v, dimL, valor);
+  encontre := BuscarValor(v, dimL, valor);
   writeln;
   writeln;
   if (encontre) then writeln('El ', valor, ' esta en el vector')
-                else writeln('El ', valor, ' no esta en el vector');
+    else writeln('El ', valor, ' no esta en el vector');
                 
   writeln;
   writeln;

@@ -4,6 +4,7 @@
      Finalizar con el número 200. ✅
     b.  Un módulo recursivo que reciba la lista generada en a) e imprima los valores de la lista en el mismo orden que están almacenados. ✅
     c. Implemente un módulo recursivo que reciba la lista generada en a) e imprima los valores de la lista en orden inverso al que están almacenados. ✅
+    d. Implemente un módulo recursivo que reciba la lista generada en a) y devuelva el mínimo valor de la lista.  
 }
 
 program practica2_2;
@@ -54,9 +55,19 @@ procedure mostrarListaInversa(L:lista);
       mostrarListaInversa(L^.sig);
     writeln(L^.dato);
   end;
+function obtenerMin(l:lista):rango1;
+  function minimo(num,min:rango1):rango1;
+    begin
+      if(num < min) then minimo:=num
+      else minimo:=min;
+    end;
+  begin
+    if(L = nil) then obtenerMin := 230
+    else obtenerMin := minimo(L^.dato, obtenerMin(l^.sig));
+  end;
 var
   randoms:lista;
-  numR:integer;
+  numR, min:rango1;
 begin
   Randomize;
   randoms := nil;
@@ -75,6 +86,10 @@ begin
       // mostramos la lista de adelante para atras.
       writeln('----------- lista inversa ------------');
       mostrarListaInversa(randoms);
+
+      writeln('----------- numero mas chico ------------');
+      min:=obtenerMin(randoms);
+      writeln('El numero mas chico es el ', min);
     end
   else writeln('lista vacia');
 end.

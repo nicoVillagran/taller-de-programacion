@@ -12,7 +12,22 @@
           Nota: El módulo debe retornar TRES árboles.
     b. Implemente un módulo que reciba el árbol generado en i. y una fecha (día, mes y año) y retorne la cantidad total de productos vendidos
        en la fecha recibida. ✅
-    c. Implemente un módulo que reciba el árbol generado en ii. y retorne el código de producto con mayor cantidad total de unidades vendidas. 
+    c. Implemente un módulo que reciba el árbol generado en ii. y retorne el código de producto con mayor cantidad total de unidades vendidas.
+
+      iniciar un "nodo maximo" (un puntero que apunte a nil)
+      si nodo <> nil entonces
+        si (nodo^.cantUnit > max^.cantUnit) entonces
+          max := nodo;
+      fin.
+      -----
+      iniciar un "maximo" (-1)
+      iniciar referencia (0)
+      si nodo <> nil entonces
+        si (nodo^.cantUnit > max) entonces
+          max := nodo;
+          referencia:maximo
+      fin.
+
     ------------------------------------------------
     Nota clase: los arboles son estructuras "recursivas".
 }
@@ -225,13 +240,13 @@ procedure enOrden(a:arbol3);
   end;
  end;
 
-procedure modulo1(var a: arbol{var a2: arbol2;var a3: arbol3});
+procedure modulo1(var a: arbol2{var a2: arbol2;var a3: arbol3});
   // var a: arbol3;
  begin
   // cargar primer arbol
-  cargarArbol1(a);
+  // cargarArbol1(a);
   // cargar segundo arbol
-  // cargarArbol2(a);
+  cargarArbol2(a);
   // cargar tercer arbol
   // cargarArbol3(a);
   
@@ -265,21 +280,30 @@ function moduloB (a: arbol; f: tFecha) : integer;
 
     moduloB:=contador;
   end;
+
+procedure moduloC(a:arbol2; var max:tProducto);
+  begin
+    
+  end;
 Var
   a1: arbol;
+  a2: arbol2;
   fecha: tFecha;
+  max:tProducto;
 Begin
 	Randomize;
+  // inicializar el maximo
+  max.codProd:=0;
+  max.unidadesVendidas:=-1;
 	
-  // generar y retornar ABB.
-	modulo1(a1);
+	modulo1(a2);
+  //------------------- punto b
   // Módulo "b"
   // cargar / crear una fecha
-  crearFecha(fecha);
-  WriteLn('fecha: ', fecha.dia, '/', fecha.mes, '/', fecha.anio);
-  writeln('hay ', moduloB(a1,fecha), ' ventas con esta fecha.');
+  // crearFecha(fecha);
+  // WriteLn('fecha: ', fecha.dia, '/', fecha.mes, '/', fecha.anio);
+  // writeln('hay ', moduloB(a1,fecha), ' ventas con esta fecha.');
   
+  //------------------- punto c
+  moduloC(a2, max)
 End.
- 
-
-  

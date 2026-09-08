@@ -56,10 +56,12 @@ procedure cargarAbol(var a: arbol);
     end;
   // mis modulos
   function cargarCompra2(c: compra):tCompra2;
-    var c2: tCompra2
+    var c2: tCompra2;
     begin
-      c2.cod_cli:=elem.cod_cli;
-      c2.mes := elem.mes;
+      c2.cod_cli:=c.cod_cli;
+      c2.mes := c.mes;
+
+      cargarCompra2 := c2;
     end;
   procedure insertarEnLista(var pri: lista;elem: tCompra2);
     var
@@ -80,6 +82,7 @@ procedure cargarAbol(var a: arbol);
     begin
       if(a = nil) then
         begin
+          new(a);
           a^.dato.cod_vj := elem.cod_vj;
           a^.dato.p := nil;
           insertarEnLista(a^.dato.p, cargarCompra2(elem));
@@ -115,15 +118,66 @@ function buscarJuego(a: arbol; codigo: Integer) : lista;
   end;
 // --------------- fin modulo "B" -------------------------
 // --------------- modulo "C" -------------------------
-procedure cantClientesRecursivo(l: lista; m: mes; var cant: integer);
+// procedure cantClientesRecursivo(l: lista; m: mes; var cant: integer);
+//   begin
+//     if (l <> nil) then 
+//       begin
+//         if (l^.dato.mes = m) then cant := cant + 1;
+//         cantClientes(l^.sig,m,cant);
+//       end;
+//   end;
+function cantClientesRecursivo(l: lista; m: meses) : integer;
   begin
-    if (l <> nil) then 
+    if (l = nil) then cantClientesRecursivo := 0
+    else
+      if (l^.dato.mes = m) then cantClientesRecursivo := 1 + cantClientesRecursivo(l^.sig, m)
+      else cantClientesRecursivo := 0 + cantClientesRecursivo(l^.sig, m);
+  end;
+// ---------- modulo adicional
+procedure recorrerLista(l:lista);
+  begin
+    while l<>nil do
       begin
-        if (l^.dato.mes = m) then cant := cant + 1;
-        cantClientes(l^.sig,m,cant);
+        WriteLn(l^.dato.mes);
+        l := l^.sig;
+      end;
+  end;
+procedure recorrer(a:arbol);
+  begin
+    if (a <> nil) then
+      begin
+        recorrer(a^.HI);
+        WriteLn(a^.dato.cod_vj);
+        recorrerLista(a^.dato.p);
+        
+        recorrer(a^.HD);
       end;
   end;
 
+var
+  a: arbol;
+  L: lista;
+  codigo: Integer;
+  m: meses;
+  suma: Integer;
 begin
-  // principal...
+  a := nil;
+  // L := nil;
+  cargarAbol(a);
+
+  recorrer(a);
+  // -------- buscar juego
+  WriteLn('ingrese el cod. juego a buscar: ');
+  ReadLn(codigo);
+  L := buscarJuego(a, codigo);
+  if L = nil then WriteLn('el juego con codigo ', codigo, ' no existe')
+  else 
+    begin
+      // ---------- buscar y sumar
+      WriteLn('ingrese el mes a buscar: ');
+      ReadLn(m);
+      suma := cantClientesRecursivo(L, m);
+      WriteLn('cantidad de clientes, con compras en el mes ', m, ' es: ', suma);
+    end;
+
 end.

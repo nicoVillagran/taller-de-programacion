@@ -21,6 +21,41 @@ type
     color: string;
     modelo: string;
   end;
+procedure insertarOrdenado(pri: lista;valor:Integer);
+  var act,ant,nuevo: listas;
+  begin
+  // crear ndo
+    new(nuevo);
+    nuevo^.dato := valor;
+    nuevo^.sig := nil;
+// preguntar si est vacia
+    if(pri=nil) pri:=nuevo
+    else
+      begin
+      // inicializar act y ant
+        act := pri;
+        ant := pri;
+        
+        // moveste
+        while act <> nil and act^.dato < nuevo^.dato do
+          begin
+            ant := act;
+            act := act^.sig;
+          end;
+
+      // si va al principio
+        if(act = pri) then 
+          begin
+          nuevo^.sig := pri
+          pri := nuevo;  
+          end 
+        else // si va en el medio o al final
+          begin
+            ant^.sig := nuevo;
+            nuevo^.sig := act;
+          end;
+      end;
+  end;
 begin
   // ...
 end.

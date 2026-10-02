@@ -8,7 +8,10 @@ Se realizará un casting para un programa de TV. El casting durará 5 días y en
     b) Informar para cada día y turno asignado, el nombre de la persona a entrevistar. 
     Piense: ¿Es necesario recorrer toda la estructura en el inciso b?
 
-
+    Nota: el enunciado, cuando nos dice: "y se la debe asignar en un día y turno de la siguiente manera:
+    las personas primero completan el primer día en turnos sucesivos, luego el segundo día y así siguiendo.",
+    nos está indicando debemos o seria recomendable tener un vector de DL para hacer eficiente el recorrido.
+    Principal diferencia con el enunciado o ejercicio 3.
 */
 package tema2;
 
@@ -17,50 +20,57 @@ import PaqueteLectura.GeneradorAleatorio;
 public class Ej04Programa {
     public static void main(String[] args) {
         GeneradorAleatorio.iniciar();
+        
         int DFDia = 5;
         int DFTurno = 8;
-        int dia, turno, dni, edad;
+        int dni, edad;
         String nombre;
         
-        Persona[][] vInscriptos = new Persona[DFTurno][DFDia]; // (2,5) y (3,2)
-        
+        Persona[][] casting = new Persona[DFDia][DFTurno];
+
         int leidos=0;
-//        int c=0;
-//        int f=0;
-        Persona pAux;
+        // estas variables replazaran, a los 2 bucles "for" (*2)
+        int dia=0; 
+        int turno=0;
         
+        boolean completado=false;
         nombre = GeneradorAleatorio.generarString(4);
+        
         while ((!nombre.equals("ZZZ"))&&(leidos < 40)){
             dni = GeneradorAleatorio.generarInt(45000000);
-            edad = GeneradorAleatorio.generarInt(56);
+            edad = GeneradorAleatorio.generarInt(86);
             
-            pAux = new Persona(nombre, dni, edad);
-            
-            for (int c=0;c<DFDia;c++){
-            // nos movemos por dia, una constante fija "C"
-                for (int f=0;f<DFTurno;f++){// nos movemos por fila, siempre en la misma columna "C"
-                    vInscriptos[f][c] = pAux;
-                }
+            if (dia < DFDia) {
+                if (turno < DFTurno) casting[dia][turno] = new Persona(nombre, dni, edad);
+                else completado=true;
             }
-            
-            if (vInscriptos[turno][dia] != null) System.out.println("Dia "+(dia+1)+", Turno "+(turno+1)+" No disponible");
-            else vInscriptos[turno][dia] = pAux;
+            else completado=true;
+            // Eliminar este "for", solo se necesita avanzar, no recorrer toda la matriz. Ver apuntes: variables de condicionales. (*2)
+//            for (int c=0;c<DFDia;c++){ // nos movemos por dia, una constante fija "C".
+//                for (int f=0;f<DFTurno;f++){// nos movemos por fila, siempre en la misma columna "C"
+//                    casting[f][c] = new Persona(nombre, dni, edad); // en vez de una variable crear la persona directamente en esta linea (new Persona).
+//                }
+//            }
             
             leidos++;
-            if (leidos > 20) nombre = "ZZZ";
+            if (leidos > 20) nombre = "ZZZ"; // simulamos un ingreso de nombre = "ZZZ"
             else nombre = GeneradorAleatorio.generarString(4);
         }
 //        vPersonas[1][4] = new Persona("nicolas",45873479,22);
 //        vPersonas[2][1] = new Persona("nicolas",45873479,22);
         
-        for (int c=0;c<DFDia;c++){
-            System.out.println("Dia "+(c+1)+": ");
-            for (int f=0;f<DFTurno;f++){
+
+        /*
+        Informar para cada día y turno asignado, el nombre de la persona a entrevistar. 
+        Piense: ¿Es necesario recorrer toda la estructura en el inciso b? --> NO
+        */
+        for (int d=0;d<DFDia;d++){
+            System.out.println("Dia "+(d+1)+": "); // output: "Dia c: "
+            for (int t=0;t<DFTurno;t++){
                 System.out.print("  - ");
-                if(vInscriptos[f][c] != null) {
-                    System.out.println("Turno "+(f+1)+" asignado a "+vInscriptos[f][c].getNombre());
+                if(casting[d][t] != null) {
+                    System.out.println("Turno "+(f+1)+" asignado a "+casting[f][c].getNombre());
                 }
-                else System.out.println("Turno "+(f+1)+" NO asignado");
             }
             System.out.println("-------------");
         }

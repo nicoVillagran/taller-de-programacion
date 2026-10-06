@@ -28,9 +28,6 @@ public class Ej04Programa {
 
         Persona[][] casting = new Persona[DFDia][DFTurno];
         int[] DMCasting =  new int[DFDia];
-        /*
-        []
-        */
 
         // Inicio los turnos en disponible
         for (int dia = 0; dia < DFDia; dia++) {
@@ -65,12 +62,15 @@ public class Ej04Programa {
                     }
                 }
             }
-
-            if (cantInscriptos > 23) {
-                nombre = "ZZZ";
-            } else {
-                nombre = GeneradorAleatorio.generarString(4);
-            }
+            
+            if (cantInscriptos < 40) nombre = GeneradorAleatorio.generarString(4);
+            
+//             ----- simulisacion de entrada de nombre "ZZZ"
+//            if (cantInscriptos > 23) {
+//                nombre = "ZZZ";
+//            } else {
+//                nombre = GeneradorAleatorio.generarString(4);
+//            }
         }
 
         // B)
@@ -79,13 +79,13 @@ public class Ej04Programa {
             
             System.out.println("===== CASTING =====");
             /* ------------- recorrido condicional*/
-            while (DMCasting[d] != 0) {
+            while ((d<DFDia) && (DMCasting[d] != 0)) {
                 for (int t = 0;t<DMCasting[d];t++) {
-                    System.out.println("- "+casting[d][t].getNombre());
+                    System.out.println("- "+casting[d][t].getNombre()+" ("+d+", "+t+")");
                 }
-                d++;
+                if (d+1 <= DFDia) d++;
             }
-            if (DMCasting[d] == 0) System.out.println("No hay mas elementos que mostrar.");
+            if ((d<DFDia)&&(DMCasting[d] == 0)) System.out.println("No hay mas elementos que mostrar."); //d sale valiendo 5
             /* ---------- recorrido completo 
             for (Persona[] casting1 : casting) {
                 for (Persona p : casting1) {

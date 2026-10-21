@@ -1,0 +1,31 @@
+{Bienvenidos al entorno CMRE.
+Lo siguiente es un código de ejemplo que implementa un
+proceso que recibe un número de avenida como parámetro,
+se posiciona en esa avenida y la recorre.}
+
+{nota: no se usan punto y coma en este lenguaje}
+
+programa ejemplo {nombre del programa}
+procesos {declaracion de procesos}
+  proceso recorrerAvenida(E numAv: numero) {proceso / módulo}
+  comenzar
+    Pos(numAv, 1) {comando propio del lenguaje} {mueve el robot a la avenida dada y a la calle 1}
+    repetir 99 {bucle for} {mueve el robot} {avanza 99 cuadras}
+      mover
+  fin
+ 
+areas {representacion del entorno donde se movera un robot}
+  ciudad: AreaC (1,1,100,100) {area / objeto area} {defince un area de movimiento de 100x100}
+
+robots {declaraciones de robots}
+  robot robot1 {robot / objeto robot} {se crea un robot y se le ordena ejecutar "recorrerAvenida" 1}
+  comenzar
+    recorrerAvenida(1) {comando propio del programa}
+  fin
+  
+variables {declaraciones de variables (locales al programa principal)}
+  R_info: robot1 {se crea una robot de tipo: "robot1"}
+comenzar {programa principal}
+  AsignarArea(R_info, ciudad) {comando propio del lenguaje} {se le asigna un area para moverse al robot}
+  Iniciar(R_info, 1,1) {comando propio del lenguaje} {se posiciona ese robot en una lugar de esa area}
+fin

@@ -1,5 +1,6 @@
 {Realice un programa para que un robot junte todas las flores de la avenida 1 y las deposite al final de dicha avenida. Al finalizar, debe informar la cantidad de flores depositadas y la cantidad de esquinas sin flores que encontró durante el recorrido.}
 {a) Modifique el programa anterior para que el mismo robot realice lo mismo en las avenidas 1, 3 y 5.}
+{b) Modifique el programa anterior para que el trabajo sea realizado por 3 robots: uno realiza la avenida 1, otro realiza la avenida 3 y otro la avenida 5. Cada robot debe iniciar en las esquina (1,1), (3,1) y (5,1) respectivamente.}
 programa P1Ejercicio1
 {modulos}
 procesos
@@ -42,19 +43,22 @@ robots
     cantEsquinas:numero
     avenida:numero
   comenzar
-    avenida:=1
-    mientras (avenida <= 3)
-      cantFlores:=0
-      cantEsquinas:=0
-      recorrerAvenida(avenida, cantFlores, cantEsquinas)
-      Informar(cantFlores)
-      Informar(cantEsquinas)
-      avenida := avenida +1
+    cantFlores:=0
+    cantEsquinas:=0
+    recorrerAvenida(PosAv, cantFlores, cantEsquinas)
+    Informar(cantFlores)
+    Informar(cantEsquinas)
   fin
   
 variables
-  r: recolector
+  r1: recolector
+  r2: recolector
+  r3: recolector
 comenzar
-  AsignarArea(r, ciudad)
-  Iniciar(r, 1,1) {esquina unica inicial (robot: r1)}
+  AsignarArea(r1, ciudad)
+  AsignarArea(r2, ciudad)
+  AsignarArea(r3, ciudad)
+  Iniciar(r1, 1,1) {esquina unica inicial (robot: r1)}
+  Iniciar(r2, 3,1) {esquina unica inicial (robot: r1)}
+  Iniciar(r3, 5,1) {esquina unica inicial (robot: r1)}
 fin

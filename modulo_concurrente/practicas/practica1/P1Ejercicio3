@@ -1,0 +1,64 @@
+{Realice un programa en el que 3 robots realicen escaleras de 4 escalones. El tamaño de cada escalón se incrementa en un 1 respecto al escalón anterior. El primer escalón será de 1x1, el segundo de 2x2, y así sucesivamente, como se muestra a continuación:}
+{Al finalizar el recorrido, cada robot debe informar la cantidad de escalones en los que la cantidad de papeles superó en 1 a la cantidad de flores. Las esquinas deben quedar sin modificar.}
+
+programa P1Ejecicio3
+procesos
+  proceso recolectar(ES cantFlores: numero; ES cantPapeles:numero)
+  comenzar
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor
+      cantFlores:=cantFlores+1
+    mientras (HayPapelEnLaEsquina)
+      tomarPapel
+      cantPapeles:=cantPapeles+1
+  fin
+  proceso subirEscalon(E escalon: numero;ES contEscalones:numero)
+  variables
+    cantPapeles:numero
+    cantFlores:numero
+  comenzar
+    cantPapeles:=0
+    cantFlores:=0
+    recolectar(cantFlores,cantPapeles)
+    repetir escalon
+      mover
+      recolectar(cantFlores,cantPapeles)
+    derecha
+    repetir escalon
+      mover
+      recolectar(cantFlores,cantPapeles)
+    repetir 3
+      derecha
+    si ((cantPapeles-1) = cantFlores)
+      contEscalones:=contEscalones+1
+  fin
+  
+areas
+  ciudad: AreaC (1,1,100,100)
+  
+robots
+  robot escalonado
+  variables
+    escalon:numero
+    contEscalones:numero
+  comenzar
+    escalon:=1
+    contEscalones:=0
+    subirEscalon(escalon,contEscalones)
+    repetir 3
+      escalon:=escalon*2
+      subirEscalon(escalon,contEscalones)
+  fin
+
+variables
+  r1: escalonado
+  r2: escalonado
+  r3: escalonado
+comenzar
+  AsignarArea(r1, ciudad)
+  AsignarArea(r2, ciudad)
+  AsignarArea(r3, ciudad)
+  Iniciar(r1,2,14)
+  Iniciar(r2,11,14)
+  Iniciar(r3,21,14)
+fin

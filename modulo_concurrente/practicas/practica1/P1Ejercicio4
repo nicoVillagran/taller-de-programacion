@@ -1,27 +1,57 @@
 {Realice un programa en el que dos robots se encargan de limpiar la ciudad. La ciudad se dividió en 4 áreas: las impares (1 y 3) deben limpiarse de flores; y las pares (2 y 4) deben limpiarse de papeles. Un robot debe encargarse de las áreas impares y otro robot de las pares. Modularice el recorrido de cada área.}
+{a) Analizar (no es necesario implementar) qué se debería modificar si ahora se pide que la ciudad se divida en 20 áreas: ● Área 1: Avenidas 1 a 5 ● Área 2: Avenidas 6 a 10 ● … ● Área 19: Avenidas 91 a 95 ● Área 20: Avenidas 96 a 100}
 
 programa P1Ejercicio4
 procesos
-  {...}
+  proceso juntarFlores
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+  fin
+  proceso juntarPapeles
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+  fin
+  proceso recorrerArea(E inicio:numero; E esPar:boolean)
+  variables
+    avenida:numero
+  comenzar
+    avenida:=inicio
+    repetir 25
+      Pos(avenida,1)
+      repetir 100
+        si (esPar) 
+          juntarPapeles
+        sino 
+          juntarFlores
+        si (PosCa < 100)
+          mover
+      avenida:=avenida+1
+  fin
   
 areas
-  {ciudad: AreaC (1,1,25,100) {reducimos el tamaño ciudad para las pruebas, deberia 100x100}
   area1: AreaP(1,1,25,100)
   area2: AreaP(26,1,50,100)
   area3: AreaP(51,1,75,100)
   area4: AreaP(76,1,100,100)
+
+{Ya que a cada robot se le asigna recorrer ciertas areas y al 2do otras, si aumentase la cantidad de areas tambien la cantidad que estos recorren. si la ciudad se divide en 20 areas serian 10 llamados al modulo recorrer en cada robot}
 robots
-  robot jardinero
+  robot limpiadorFlores
   comenzar
-    {...}
+    recorrerArea(1, F)
+    recorrerArea(51, F)
   fin
-  robot recolector
+  robot limpiadorPapeles
   comenzar
-    {...}
+    recorrerArea(26, V)
+    recorrerArea(76, V)
   fin
+  
 variables
-  r1: jardinero
-  r2: recolector
+  r1: limpiadorFlores
+  r2: limpiadorPapeles
 comenzar
   AsignarArea(r1, area1)
   AsignarArea(r1, area3)

@@ -1,0 +1,84 @@
+{Realice un programa en el que cuatro robots realizan las siguientes actividades: }
+{● El robot 1 debe limpiar de flores las primeras 15 esquinas de las calles 75 y 80. Al finalizar cada calle, debe depositar todas las flores en la última esquina.}
+{● El robot 2 debe limpiar de papeles las últimas 20 esquinas de las avenidas 75 y 80. Al finalizar cada avenida debe depositar todos los papeles en la primera esquina.}
+{● El robot 3 debe limpiar de flores las últimas 15 esquinas de las calles 10 y 15. Al finalizar cada calle, debe depositar todas las flores en la última esquina.}
+{● El robot 4 debe limpiar de papeles las primeras 20 esquinas de las avenidas 10 y 15. Al finalizar cada avenida debe depositar todos los papeles en la primera esquina.}
+
+programa P1Ejercicio5
+procesos
+  proceso juntarFlores
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+  fin
+  proceso juntarPapeles
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+  fin
+  proceso dejarFlores
+  comenzar
+    mientras(HayFlorEnLaBolsa)
+      depositarFlor
+  fin
+  proceso dejarPapeles
+  comenzar
+    mientras(HayPapelEnLaBolsa)
+      depositarPapel
+  fin
+  proceso recorrerCalle(E calle: numero){r1, r3}
+  comenzar
+    juntatFlores
+    repetir 14
+      mover
+      juntarFlores
+    Pos(100,calle)
+    dejarFlores
+  fin
+  proceso recorrerAvenida(E avenida: numero)
+  comenzar
+    juntarPapeles
+    repetir 19
+      mover
+      juntarPapeles
+    Pos(avenida, 100)
+    dejarPapeles
+  fin
+  
+areas
+{● El robot 1 debe limpiar de flores las primeras 15 esquinas de las calles 75 y 80. Al finalizar cada calle, debe depositar todas las flores en la última esquina.}
+  r1_area1: AreaP (1,75,15,75)
+  r1_area2: AreaP (1,80,15,80)
+  
+  r1_area1:
+  
+robots
+  robot robot1
+  comenzar
+    derecha
+    recorrerCalle(75)
+    Pos(1, 80)
+    recorrerCalle(80)
+  fin
+  {● El robot 2 debe limpiar de papeles las últimas 20 esquinas de las avenidas 75 y 80. Al finalizar cada avenida debe depositar todos los papeles en la primera esquina.}
+  robot robot2
+  comenzar
+    recorrerAvenida(75,80,20)
+    recorrerAvenida(80,80,20)
+  fin
+  {● El robot 3 debe limpiar de flores las últimas 15 esquinas de las calles 10 y 15. Al finalizar cada calle, debe depositar todas las flores en la última esquina.}
+  robot robot3
+  comenzar
+    derecha
+    recorrerCalle(85,10,15)
+    dejarFlores
+    recorrerCalle(85,15,15)
+    dejarFlores
+  fin
+  
+variables
+  r1: robot1
+comenzar
+  AsignarArea(r1, Area11)
+  Iniciar(r2, 1,75)
+fin

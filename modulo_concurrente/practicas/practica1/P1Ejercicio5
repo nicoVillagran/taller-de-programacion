@@ -88,8 +88,8 @@ robots
   robot robot4
   comenzar
     recorrerAvenida(PosCa,V)
-    {Pos(15,1)}
-    {recorrerAvenida(PosCa,V)}
+    Pos(15,1)
+    recorrerAvenida(PosCa,V)
   fin
   
 variables

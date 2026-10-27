@@ -1,117 +1,54 @@
-{Realice un programa en el que cuatro robots realizan las siguientes actividades: }
-{● El robot 1 debe limpiar de flores las primeras 15 esquinas de las calles 75 y 80. Al finalizar cada calle, debe depositar todas las flores en la última esquina.}
-{● El robot 2 debe limpiar de papeles las últimas 20 esquinas de las avenidas 75 y 80. Al finalizar cada avenida debe depositar todos los papeles en la primera esquina.}
-{● El robot 3 debe limpiar de flores las últimas 15 esquinas de las calles 10 y 15. Al finalizar cada calle, debe depositar todas las flores en la última esquina.}
-{● El robot 4 debe limpiar de papeles las primeras 20 esquinas de las avenidas 10 y 15. Al finalizar cada avenida debe depositar todos los papeles en la primera esquina.}
+{Dos robots compiten para ver cuál junta más flores. El primer robot recoge todas las flores de la avenida 1 entre las calles 1 y 10. El segundo robot recoge todas las flores de la avenida 2, entre las calles 11 y 20. Al finalizar el recorrido, el robot que recogió mayor cantidad de flores debe informar la diferencia de flores que obtuvo respecto al robot perdedor (el que obtuvo menos flores). Los robots inician en las esquinas (1, 1) y (2, 11) respectivamente.}
 
-programa P1Ejercicio5
+programa P2Ejercicio1
 procesos
-  proceso juntarFlores
+  proceso juntarFlores(ES cantFlores:numero)
   comenzar
-    mientras(HayFlorEnLaEsquina)
+    mientras (HayFlorEnLaEsquina)
       tomarFlor
+      cantFlores:=cantFlores+1
   fin
-  proceso juntarPapeles
+  proceso recorrerAvenida(ES cantFlores:numero)
   comenzar
-    mientras(HayPapelEnLaEsquina)
-      tomarPapel
-  fin
-  proceso dejarFlores
-  comenzar
-    mientras(HayFlorEnLaBolsa)
-      depositarFlor
-  fin
-  proceso dejarPapeles
-  comenzar
-    mientras(HayPapelEnLaBolsa)
-      depositarPapel
-  fin
-  proceso recorrerCalle(E empezo:numero;E dejar:boolean){r1, r3}
-  comenzar
-    juntarFlores
-    repetir 14
+    juntarFlores(cantFlores)
+    repetir 9
       mover
-      juntarFlores
-    si (dejar)
-      Pos(empezo,PosCa)
-    dejarFlores
+      juntarFlores(cantFlores)
   fin
-  proceso recorrerAvenida(E empezo: numero;E dejar:boolean)
-  comenzar
-    juntarPapeles
-    repetir 19
-      mover
-      juntarPapeles
-    si (dejar)
-      Pos(PosAv, empezo)
-    dejarPapeles
-  fin
-  
 areas
-  {robot 1, primeras 15 esquinas de las calles 75 y 80.}
-  r1_area1: AreaP(1,75,15,75)
-  r1_area2: AreaP(1,80,15,80)
-  
-  {robot 2, últimas 20 esquinas de las avenidas 75 y 80.}
-  r2_area1: AreaP(75,80,75,100)
-  r2_area2: AreaP(80,80,80,100)
-  
-  {robot 3, últimas 15 esquinas de las calles 10 y 15.}
-  r3_area1: AreaP(85,10,100,10)
-  r3_area2: AreaP(85,15,100,15)
-  
-  {robot 4, primeras 20 esquinas de las avenidas 10 y 15}
-  r4_area1: AreaP(10,1,10,20)
-  r4_area2: AreaP(15,1,15,20)
-  
+  ciudad: AreaC (1,1,20,20)
 robots
   robot robot1
+  variables
+    cantFlores:numero
+    cantFloresR2:numero
   comenzar
-    derecha
-    recorrerCalle(PosAv,F)
-    Pos(1, 80)
-    recorrerCalle(PosAv,F)
+    cantFlores:=0
+    recorrerAvenida(cantFlores)
+    EnviarMensaje(cantFlores,r2)
+    RecibirMensaje(cantFloresR2,r2)
+    si (cantFlores > cantFloresR2)
+      Informar(cantFlores)
   fin
   robot robot2
+  variables
+    cantFlores:numero
+    cantFloresR1:numero
   comenzar
-    recorrerAvenida(PosCa,V)
-    Pos(80, 80)
-    recorrerAvenida(PosCa,V)
+    cantFlores:=0
+    recorrerAvenida(cantFlores)
+    EnviarMensaje(cantFlores,r1)
+    RecibirMensaje(cantFloresR1,r1)
+    si (cantFlores > cantFloresR1)
+      Informar(cantFlores)
   fin
-  robot robot3
-  comenzar
-    derecha
-    recorrerCalle(PosAv,F)
-    Pos(85,15)
-    recorrerCalle(PosAv,F)
-  fin
-  robot robot4
-  comenzar
-    recorrerAvenida(PosCa,V)
-    Pos(15,1)
-    recorrerAvenida(PosCa,V)
-  fin
-  
 variables
   r1: robot1
   r2: robot2
-  r3: robot3
-  r4: robot4
 comenzar
-  AsignarArea(r1, r1_area1)
-  AsignarArea(r1, r1_area2)
+  AsignarArea(r1, ciudad)
+  AsignarArea(r2, ciudad)
   
-  AsignarArea(r2, r2_area1)
-  AsignarArea(r2, r2_area2)
-  
-  AsignarArea(r3, r3_area1)
-  AsignarArea(r3, r3_area2)
-  
-  AsignarArea(r4, r4_area1)
-  AsignarArea(r4, r4_area2)
-  
-  Iniciar(r1,1,75)
-  Iniciar(r2,75,80)
-  Iniciar(r3,85,10)
-  Iniciar(r4,10,1)
+  Iniciar(r1, 1,1)
+  Iniciar(r2, 2,11)
 fin

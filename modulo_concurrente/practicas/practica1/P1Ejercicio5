@@ -26,59 +26,92 @@ procesos
     mientras(HayPapelEnLaBolsa)
       depositarPapel
   fin
-  proceso recorrerCalle(E calle: numero){r1, r3}
+  proceso recorrerCalle(E empezo:numero;E dejar:boolean){r1, r3}
   comenzar
-    juntatFlores
+    juntarFlores
     repetir 14
       mover
       juntarFlores
-    Pos(100,calle)
+    si (dejar)
+      Pos(empezo,PosCa)
     dejarFlores
   fin
-  proceso recorrerAvenida(E avenida: numero)
+  proceso recorrerAvenida(E empezo: numero;E dejar:boolean)
   comenzar
     juntarPapeles
     repetir 19
       mover
       juntarPapeles
-    Pos(avenida, 100)
+    si (dejar)
+      Pos(PosAv, empezo)
     dejarPapeles
   fin
   
 areas
-{● El robot 1 debe limpiar de flores las primeras 15 esquinas de las calles 75 y 80. Al finalizar cada calle, debe depositar todas las flores en la última esquina.}
-  r1_area1: AreaP (1,75,15,75)
-  r1_area2: AreaP (1,80,15,80)
+  {robot 1, primeras 15 esquinas de las calles 75 y 80.}
+  r1_area1: AreaP(1,75,15,75)
+  r1_area2: AreaP(1,80,15,80)
   
-  r1_area1:
+  {robot 2, últimas 20 esquinas de las avenidas 75 y 80.}
+  r2_area1: AreaP(75,80,75,100)
+  r2_area2: AreaP(80,80,80,100)
+  
+  {robot 3, últimas 15 esquinas de las calles 10 y 15.}
+  r3_area1: AreaP(85,10,100,10)
+  r3_area2: AreaP(85,15,100,15)
+  
+  {robot 4, primeras 20 esquinas de las avenidas 10 y 15}
+  r4_area1: AreaP(10,1,10,20)
+  r4_area2: AreaP(15,1,15,20)
   
 robots
   robot robot1
   comenzar
     derecha
-    recorrerCalle(75)
+    recorrerCalle(PosAv,F)
     Pos(1, 80)
-    recorrerCalle(80)
+    recorrerCalle(PosAv,F)
   fin
-  {● El robot 2 debe limpiar de papeles las últimas 20 esquinas de las avenidas 75 y 80. Al finalizar cada avenida debe depositar todos los papeles en la primera esquina.}
   robot robot2
   comenzar
-    recorrerAvenida(75,80,20)
-    recorrerAvenida(80,80,20)
+    recorrerAvenida(PosCa,V)
+    Pos(80, 80)
+    recorrerAvenida(PosCa,V)
   fin
-  {● El robot 3 debe limpiar de flores las últimas 15 esquinas de las calles 10 y 15. Al finalizar cada calle, debe depositar todas las flores en la última esquina.}
   robot robot3
   comenzar
     derecha
-    recorrerCalle(85,10,15)
-    dejarFlores
-    recorrerCalle(85,15,15)
-    dejarFlores
+    recorrerCalle(PosAv,F)
+    Pos(85,15)
+    recorrerCalle(PosAv,F)
+  fin
+  robot robot4
+  comenzar
+    recorrerAvenida(PosCa,V)
+    {Pos(15,1)}
+    {recorrerAvenida(PosCa,V)}
   fin
   
 variables
   r1: robot1
+  r2: robot2
+  r3: robot3
+  r4: robot4
 comenzar
-  AsignarArea(r1, Area11)
-  Iniciar(r2, 1,75)
+  AsignarArea(r1, r1_area1)
+  AsignarArea(r1, r1_area2)
+  
+  AsignarArea(r2, r2_area1)
+  AsignarArea(r2, r2_area2)
+  
+  AsignarArea(r3, r3_area1)
+  AsignarArea(r3, r3_area2)
+  
+  AsignarArea(r4, r4_area1)
+  AsignarArea(r4, r4_area2)
+  
+  Iniciar(r1,1,75)
+  Iniciar(r2,75,80)
+  Iniciar(r3,85,10)
+  Iniciar(r4,10,1)
 fin

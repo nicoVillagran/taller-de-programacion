@@ -9,6 +9,8 @@
 {○ Robot 6: Avenida 6, entre las calles 51 y 60}
 {○ Fiscalizador: Avenida 2, calle 1}
 
+{bloqueo y liberacion de robots mediante enviar/recibir mensajes}
+
 programa P2Ejercicio1
 procesos
   proceso juntarFlores(ES cantFlores:numero)
@@ -24,15 +26,27 @@ procesos
       mover
       juntarFlores(cantFlores)
   fin
-  proceso obtenerGanador(E valor:numero;E r: recolector;ES max:numero;ES r_max:recolector)
+  proceso obtenerGanador(E valor:numero;E id:numero;ES max:numero;ES idmax:numero) {idmax en vez de r_max}
   comenzar
     si (valor > max)
-      r_max:=r
+      idmax := id
       max:=valor
   fin
-  {proceso quienEs(..)}
+  proceso EnviarIds
+  comenzar
+    EnviarMensaje(1,r1)
+    EnviarMensaje(2,r2)
+    EnviarMensaje(3,r3)
+    EnviarMensaje(4,r4)
+    EnviarMensaje(5,r5)
+    EnviarMensaje(6,r6)
+  fin
+  proceso quienEs(cant, id)
+  comenzar
+    si (id=1)
+  fin
 areas
-  ciudad: AreaC (1,1,20,20)
+  ciudad: AreaC (1,1,60,60)
 robots
   robot recolector
   variables
@@ -51,16 +65,16 @@ robots
     max:numero
   comenzar
     max:=0
-    RecibirMensaje(cantFloresR1,r1)
-    RecibirMensaje(cantFloresR2,r2)
-    si (cantFloresR1 > cantFloresR2)
-      Informar(cantFloresR1)
-    sino
-      Informar(cantFloresR2)
+    EnviarIds
+    
+    RecibirMensaje(id, *)
+    {quien es}
+    RecibirMensaje(cant,id)
+    {calcularMaximo}
   fin
 variables
-  r1: robot1
-  r2: robot1
+  r1: recolector
+  r2: recolector
   R_fiscalizador:fiscalizador
 comenzar
   AsignarArea(r1, ciudad)

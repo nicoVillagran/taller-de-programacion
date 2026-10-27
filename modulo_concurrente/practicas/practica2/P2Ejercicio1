@@ -24,7 +24,13 @@ procesos
       mover
       juntarFlores(cantFlores)
   fin
-  {proceso obtenerGanador(ES max:numero;E )}
+  proceso obtenerGanador(E valor:numero;E r: recolector;ES max:numero;ES r_max:recolector)
+  comenzar
+    si (valor > max)
+      r_max:=r
+      max:=valor
+  fin
+  {proceso quienEs(..)}
 areas
   ciudad: AreaC (1,1,20,20)
 robots

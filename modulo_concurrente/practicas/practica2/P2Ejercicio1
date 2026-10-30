@@ -13,26 +13,20 @@
 
 programa P2Ejercicio1
 procesos
-  proceso juntarFlores(ES cantFlores:numero)
+  proceso juntarFlores (ES cantFlores:numero)
   comenzar
-    mientras (HayFlorEnLaEsquina)
+    mientras(HayFlorEnLaEsquina)
       tomarFlor
       cantFlores:=cantFlores+1
   fin
-  proceso recorrerAvenida(ES cantFlores:numero)
+  proceso recorrerTramoAvenida(ES cantFlores:numero)
   comenzar
     juntarFlores(cantFlores)
     repetir 9
       mover
       juntarFlores(cantFlores)
   fin
-  proceso obtenerGanador(E valor:numero;E id:numero;ES max:numero;ES idmax:numero) {idmax en vez de r_max}
-  comenzar
-    si (valor > max)
-      idmax := id
-      max:=valor
-  fin
-  proceso EnviarIds
+  proceso enviarIds
   comenzar
     EnviarMensaje(1,r1)
     EnviarMensaje(2,r2)
@@ -41,47 +35,87 @@ procesos
     EnviarMensaje(5,r5)
     EnviarMensaje(6,r6)
   fin
-  proceso quienEs(cant, id)
+  proceso esperarCantFlores(ES cantFlores:numero; ES robotId:numero)
+  variables
+    cant,id:numero
   comenzar
-    si (id=1)
+    RecibirMensaje(id,*)
+    si (id = 1)
+      RecibirMensaje(cant, r1)
+    sino
+      si (id = 2)
+        RecibirMensaje(cant, r2)
+      sino
+        si(id = 3)
+          RecibirMensaje(cant, r3)
+        sino
+          si(id = 4)
+            RecibirMensaje(cant, r4)
+          sino
+            si(id = 5)
+              RecibirMensaje(cant, r5)
+            sino
+              si(id = 6)
+                RecibirMensaje(cant, r6)
+    cantFlores:=cant
+    robotId:=id
+  fin
+  proceso encontrarMax(ES max:numero;ES maxId:numero;E valor:numero;E id:numero)
+  comenzar
+    si (valor > max)
+      maxId:=id
+      max:= valor
   fin
 areas
-  ciudad: AreaC (1,1,60,60)
+  r1_area: AreaP (1,1,1,10)
+  r2_area: AreaP (2,11,2,20)
+  r3_area: AreaP (3,21,3,30)
+  r4_area: AreaP (4,31,4,40)
+  r5_area: AreaP (5,41,5,50)
+  r6_area: AreaP (6,51,6,60)
+  rFiscalizador_area: AreaP (2,1,2,1)
 robots
-  robot recolector
+  robot florista
   variables
-    cantFlores:numero
-    id:numero
+    id,cantFlores:numero
   comenzar
-    RecibirMensaje(id,R_fiscalizador)
+    RecibirMensaje(id,fiscalizador)
     cantFlores:=0
-    recorrerAvenida(cantFlores)
-    EnviarMensaje(id,R_fiscalizador)
-    EnviarMensaje(cantFlores,R_fiscalizador)
+    recorrerTramoAvenida(cantFlores)
+    EnviarMensaje(id,fiscalizador)
+    EnviarMensaje(cantFlores, fiscalizador)
   fin
-  robot fiscalizador
+  robot coordinador
   variables
-    cantFlores:numero
-    max:numero
+    max,maxId,id,cantFlores:numero
   comenzar
-    max:=0
-    EnviarIds
-    
-    RecibirMensaje(id, *)
-    {quien es}
-    RecibirMensaje(cant,id)
-    {calcularMaximo}
+    enviarIds
+    max:=-1
+    maxId:=0
+    {esperar 2 cantFlores}
+    repetir 6
+      esperarCantFlores(cantFlores,id)
+      encontrarMax(max,maxId,cantFlores,id)
+    Informar(max)
+    Informar(maxId)
   fin
 variables
-  r1: recolector
-  r2: recolector
-  R_fiscalizador:fiscalizador
+  r1,r2,r3,r4,r5,r6: florista
+  fiscalizador: coordinador
 comenzar
-  AsignarArea(r1, ciudad)
-  AsignarArea(r2, ciudad)
-  AsignarArea(R_fiscalizador, ciudad)
+  AsignarArea(r1, r1_area)
+  AsignarArea(r2, r2_area)
+  AsignarArea(r3, r3_area)
+  AsignarArea(r4, r4_area)
+  AsignarArea(r5, r5_area)
+  AsignarArea(r6, r6_area)
+  AsignarArea(fiscalizador,rFiscalizador_area)
   
   Iniciar(r1, 1,1)
   Iniciar(r2, 2,11)
-  Iniciar(R_fiscalizador, 2,1)
+  Iniciar(r3, 3,21)
+  Iniciar(r4, 4,31)
+  Iniciar(r5, 5,41)
+  Iniciar(r6, 6,51)
+  Iniciar(fiscalizador,2,1)
 fin

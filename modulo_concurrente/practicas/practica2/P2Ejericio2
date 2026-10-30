@@ -10,7 +10,31 @@ informar la suma de las cantidades enviadas por los 3 robots.
 
 programa P2Ejercicio2
 procesos
-  {..}
+  proceso juntarFlores(ES cantFlores:numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      cantFlores:=cantFlores+1
+  fin
+  proceso juntarPapeles(ES cantPapeles:numero)
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+      cantPapeles:=cantPapeles+1
+  fin
+  proceso hacerEscalon(ES contEscalones:numero)
+  variables
+    alto:numero
+  comenzar
+    juntar
+    Random(alto,1,5)
+    repetir alto
+      mover
+      {juntar}
+    derecha
+    mover
+    {juntar}
+  fin
 areas
   ciudad: AreaC (1,1,100,100)
 robots

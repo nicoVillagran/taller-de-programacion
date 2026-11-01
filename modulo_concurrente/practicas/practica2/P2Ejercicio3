@@ -4,7 +4,7 @@
 {Además existe un robot Fiscalizador que envía las identificaciones necesarias.}
 {Los robots A1 y B1 deberán realizar las 10 primeras esquinas de su recorrido, y al finalizar avisarán a los robots A2 y B2 respectivamente para que continúen con las siguientes 10 esquinas. Al finalizar el Fiscalizador debe informar qué equipo fue el ganador.}
 {Inicialice los robots en las esquinas que considere más apropiadas según el trayecto que le corresponde realizar a cada uno. El Fiscalizador inicia en la esquina (1,1).}
-
+{b. Modifique el programa anterior para que cada equipo repita el recorrido con las siguientes 20 esquinas de sus correspondientes calles.}
 programa P2Ejercicio3
 procesos
   proceso juntarPapeles(ES cantPapeles:numero)
@@ -34,8 +34,12 @@ EnviarMensaje(idGrupo,A2)
 areas
   a1_area: AreaP (1,5,10,5)
   a2_area: AreaP (11,5,20,5)
+  a3_area: AreaP (21,5,30,5)
+  a4_area: AreaP (31,5,40,5)
   b1_area: AreaP (1,7,10,7)
   b2_area: AreaP (11,7,20,7)
+  b3_area: AreaP (21,7,30,7)
+  b4_area: AreaP (31,7,40,7)
   f_area: AreaP(1,1,1,1)
 robots
   robot robotA1
@@ -52,6 +56,24 @@ robots
     cantPapeles:numero
   comenzar
     RecibirMensaje(cantPapeles,A1)
+    derecha
+    recorrerTramoCalle(cantPapeles)
+    EnviarMensaje(cantPapeles,A3)
+  fin
+  robot robotA3
+  variables
+    cantPapeles:numero
+  comenzar
+    RecibirMensaje(cantPapeles,A2)
+    derecha
+    recorrerTramoCalle(cantPapeles)
+    EnviarMensaje(cantPapeles,A4)
+  fin
+  robot robotA4
+  variables
+    cantPapeles:numero
+  comenzar
+    RecibirMensaje(cantPapeles,A3)
     derecha
     recorrerTramoCalle(cantPapeles)
     EnviarMensaje(1,fiscalizador)
@@ -73,6 +95,24 @@ robots
     RecibirMensaje(cantPapeles,B1)
     derecha
     recorrerTramoCalle(cantPapeles)
+    EnviarMensaje(cantPapeles,B3)
+  fin
+  robot robotB3
+  variables
+    cantPapeles:numero
+  comenzar
+    RecibirMensaje(cantPapeles,B2)
+    derecha
+    recorrerTramoCalle(cantPapeles)
+    EnviarMensaje(cantPapeles,B4)
+  fin
+  robot robotB4
+  variables
+    cantPapeles:numero
+  comenzar
+    RecibirMensaje(cantPapeles,B3)
+    derecha
+    recorrerTramoCalle(cantPapeles)
     EnviarMensaje(2,fiscalizador)
     EnviarMensaje(cantPapeles,fiscalizador)
   fin
@@ -84,9 +124,9 @@ robots
     repetir 2
       RecibirMensaje(idGrupo, *)
       si (idGrupo = 1)
-        RecibirMensaje(cantPapeles1, A2)
+        RecibirMensaje(cantPapeles1, A4)
       sino
-        RecibirMensaje(cantPapeles2, B2)
+        RecibirMensaje(cantPapeles2, B4)
     si (cantPapeles1 > cantPapeles2)
       Informar(1)
     sino
@@ -95,18 +135,30 @@ robots
 variables
   A1:robotA1
   A2:robotA2
+  A3:robotA3
+  A4:robotA4
   B1:robotB1
   B2:robotB2
+  B3:robotB3
+  B4:robotB4
   fiscalizador:coordinador
 comenzar
   AsignarArea(A1, a1_area)
   AsignarArea(A2, a2_area)
+  AsignarArea(A3, a3_area)
+  AsignarArea(A4, a4_area)
   AsignarArea(B1, b1_area)
   AsignarArea(B2, b2_area)
+  AsignarArea(B3, b3_area)
+  AsignarArea(B4, b4_area)
   AsignarArea(fiscalizador, f_area)
   Iniciar(fiscalizador, 1,1)
   Iniciar(A1, 1,5)
   Iniciar(A2, 11,5)
+  Iniciar(A3, 21,5)
+  Iniciar(A4, 31,5)
   Iniciar(B1, 1,7)
   Iniciar(B2, 11,7)
+  Iniciar(B3, 21,7)
+  Iniciar(B4, 31,7)
 fin

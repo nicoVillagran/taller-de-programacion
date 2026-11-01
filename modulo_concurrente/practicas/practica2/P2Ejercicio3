@@ -25,6 +25,12 @@ procesos
     EnviarMensaje(1, A1)
     EnviarMensaje(2, B1)
   fin
+  {si (idGrupo = 1)
+EnviarMensaje(idGrupo,A2)
+      EnviarMensaje(cantPapeles,A2)
+    sino
+      EnviarMensaje(idGrupo,B2)
+      EnviarMensaje(cantPapeles,B2)}
 areas
   a1_area: AreaP (1,5,10,5)
   a2_area: AreaP (11,5,20,5)
@@ -32,41 +38,49 @@ areas
   b2_area: AreaP (11,7,20,7)
   f_area: AreaP(1,1,1,1)
 robots
-  robot recolector1
+  robot robotA1
   variables
-    idGrupo,cantPapeles:numero
+    cantPapeles:numero
   comenzar
-    RecibirMensaje(idGrupo,fiscalizador)
     derecha
     cantPapeles:=0
     recorrerTramoCalle(cantPapeles)
-    si (idGrupo = 1)
-      EnviarMensaje(idGrupo,A2)
-      EnviarMensaje(cantPapeles,A2)
-    sino
-      EnviarMensaje(idGrupo,B2)
-      EnviarMensaje(cantPapeles,B2)
+    EnviarMensaje(cantPapeles,A2)
   fin
-  robot recolector2
+  robot robotA2
   variables
-    idGrupo, cantPapeles:numero
+    cantPapeles:numero
   comenzar
-    RecibirMensaje(idGrupo,*)
-    si (idGrupo = 1)
-      RecibirMensaje(cantPapeles, A1)
-    sino
-      RecibirMensaje(cantPapeles, B1)
+    RecibirMensaje(cantPapeles,A1)
     derecha
     recorrerTramoCalle(cantPapeles)
-    EnviarMensaje(idGrupo, fiscalizador)
-    EnviarMensaje(cantPapeles, fiscalizador)
+    EnviarMensaje(1,fiscalizador)
+    EnviarMensaje(cantPapeles,fiscalizador)
+  fin
+  robot robotB1
+  variables
+    cantPapeles:numero
+  comenzar
+    derecha
+    cantPapeles:=0
+    recorrerTramoCalle(cantPapeles)
+    EnviarMensaje(cantPapeles,B2)
+  fin
+  robot robotB2
+  variables
+    cantPapeles:numero
+  comenzar
+    RecibirMensaje(cantPapeles,B1)
+    derecha
+    recorrerTramoCalle(cantPapeles)
+    EnviarMensaje(2,fiscalizador)
+    EnviarMensaje(cantPapeles,fiscalizador)
   fin
   robot coordinador
   variables
     idGrupo:numero
     cantPapeles1, cantPapeles2:numero
   comenzar
-    enviarIds
     repetir 2
       RecibirMensaje(idGrupo, *)
       si (idGrupo = 1)
@@ -79,10 +93,10 @@ robots
       Informar(2)
   fin
 variables
-  A1:recolector1
-  A2:recolector2
-  B1:recolector1
-  B2:recolector2
+  A1:robotA1
+  A2:robotA2
+  B1:robotB1
+  B2:robotB2
   fiscalizador:coordinador
 comenzar
   AsignarArea(A1, a1_area)

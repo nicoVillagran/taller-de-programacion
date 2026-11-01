@@ -1,0 +1,98 @@
+{Realice un programa con 2 equipos.}
+{  - El equipo A, compuesto por los robots A1 y A2, debe juntar papeles de las primeras 20 esquinas de la calle 5.}
+{  - El equipo B, compuesto por los robots B1 y B2, debe juntar papeles de las primeras 20 esquinas de la calle 7.}
+{Además existe un robot Fiscalizador que envía las identificaciones necesarias.}
+{Los robots A1 y B1 deberán realizar las 10 primeras esquinas de su recorrido, y al finalizar avisarán a los robots A2 y B2 respectivamente para que continúen con las siguientes 10 esquinas. Al finalizar el Fiscalizador debe informar qué equipo fue el ganador.}
+{Inicialice los robots en las esquinas que considere más apropiadas según el trayecto que le corresponde realizar a cada uno. El Fiscalizador inicia en la esquina (1,1).}
+
+programa P2Ejercicio3
+procesos
+  proceso juntarPapeles(ES cantPapeles:numero)
+  comenzar
+    mientras (HayPapelEnLaEsquina)
+      tomarPapel
+      cantPapeles:=cantPapeles+1
+  fin
+  proceso recorrerTramoCalle(ES cantPapeles:numero)
+  comenzar
+    juntarPapeles(cantPapeles)
+    repetir 9
+      mover
+      juntarPapeles(cantPapeles)
+  fin
+  proceso enviarIds
+  comenzar
+    EnviarMensaje(1, A1)
+    EnviarMensaje(2, B1)
+  fin
+areas
+  a1_area: AreaP (1,5,10,5)
+  a2_area: AreaP (11,5,20,5)
+  b1_area: AreaP (1,7,10,7)
+  b2_area: AreaP (11,7,20,7)
+  f_area: AreaP(1,1,1,1)
+robots
+  robot recolector1
+  variables
+    idGrupo,cantPapeles:numero
+  comenzar
+    RecibirMensaje(idGrupo,fiscalizador)
+    derecha
+    cantPapeles:=0
+    recorrerTramoCalle(cantPapeles)
+    si (idGrupo = 1)
+      EnviarMensaje(idGrupo,A2)
+      EnviarMensaje(cantPapeles,A2)
+    sino
+      EnviarMensaje(idGrupo,B2)
+      EnviarMensaje(cantPapeles,B2)
+  fin
+  robot recolector2
+  variables
+    idGrupo, cantPapeles:numero
+  comenzar
+    RecibirMensaje(idGrupo,*)
+    si (idGrupo = 1)
+      RecibirMensaje(cantPapeles, A1)
+    sino
+      RecibirMensaje(cantPapeles, B1)
+    derecha
+    recorrerTramoCalle(cantPapeles)
+    EnviarMensaje(idGrupo, fiscalizador)
+    EnviarMensaje(cantPapeles, fiscalizador)
+  fin
+  robot coordinador
+  variables
+    idGrupo:numero
+    cantPapeles1, cantPapeles2:numero
+  comenzar
+    enviarIds
+    repetir 2
+      RecibirMensaje(idGrupo, *)
+      si (idGrupo = 1)
+        RecibirMensaje(cantPapeles1, A2)
+      sino
+        RecibirMensaje(cantPapeles2, B2)
+    si (cantPapeles1 > cantPapeles2)
+      Informar(1)
+    sino
+      Informar(2)
+  fin
+variables
+  A1:recolector1
+  A2:recolector2
+  B1:recolector1
+  B2:recolector2
+  fiscalizador:coordinador
+comenzar
+  AsignarArea(A1, a1_area)
+  AsignarArea(A2, a2_area)
+  AsignarArea(B1, b1_area)
+  AsignarArea(B2, b2_area)
+  AsignarArea(fiscalizador, f_area)
+  Iniciar(fiscalizador, 1,1)
+  Iniciar(A1, 1,5)
+  Iniciar(A2, 11,5)
+  Iniciar(B1, 1,7)
+  Iniciar(B2, 11,7)
+fin

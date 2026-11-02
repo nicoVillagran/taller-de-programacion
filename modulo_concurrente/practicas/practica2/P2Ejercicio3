@@ -67,7 +67,7 @@ robots
   fin
   robot recolector2
   variables
-    cantPapeles:numero
+    idGrupo,cantPapeles:numero
   comenzar
     RecibirMensaje(idGrupo,*)
     derecha
@@ -99,26 +99,23 @@ robots
     idGrupo:numero
     cantPapeles1, cantPapeles2:numero
   comenzar
+    enviarIds
     repetir 2
       RecibirMensaje(idGrupo, *)
       si (idGrupo = 1)
-        RecibirMensaje(cantPapeles1, A4)
+        RecibirMensaje(cantPapeles1, A2)
       sino
-        RecibirMensaje(cantPapeles2, B4)
+        RecibirMensaje(cantPapeles2, B2)
     si (cantPapeles1 > cantPapeles2)
       Informar(1)
     sino
       Informar(2)
   fin
 variables
-  A1:robotA1
-  A2:robotA2
-  A3:robotA3
-  A4:robotA4
-  B1:robotB1
-  B2:robotB2
-  B3:robotB3
-  B4:robotB4
+  A1:recolector1
+  A2:recolector2
+  B1:recolector1
+  B2:recolector2
   fiscalizador:coordinador
 comenzar
   AsignarArea(A1, a1_area1)
@@ -133,10 +130,6 @@ comenzar
   Iniciar(fiscalizador, 1,1)
   Iniciar(A1, 1,5)
   Iniciar(A2, 11,5)
-  Iniciar(A3, 21,5)
-  Iniciar(A4, 31,5)
   Iniciar(B1, 1,7)
   Iniciar(B2, 11,7)
-  Iniciar(B3, 21,7)
-  Iniciar(B4, 31,7)
 fin
